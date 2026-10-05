@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tạo Kế Hoạch Bài Dạy Bằng AI - Chuẩn Công Văn 7991 BGD&ĐT</title>
+  
+  <!-- Google Fonts: Be Vietnam Pro & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Third-party Libraries -->
+  <!-- Marked.js for Markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- docx.js for Word document export -->
+  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+  <!-- html2pdf.js for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- Background Decorative Shapes -->
+  <div class="bg-blur bg-blur-1"></div>
+  <div class="bg-blur bg-blur-2"></div>
+
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="main-header">
+      <div class="header-brand">
+        <div class="logo-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="brand-text">
+          <h1>Tạo Kế Hoạch Bài Dạy AI</h1>
+          <p class="subtitle">Trợ Lý Soạn Giáo Án Thông Minh • Chuẩn Công văn 7991 / 5512 BGD&ĐT</p>
+        </div>
+      </div>
+      <div class="header-badges">
+        <span class="badge badge-primary"><i class="fa-solid fa-certificate"></i> Chuẩn CV 7991/BGDĐT</span>
+        <button type="button" id="btn-open-apikey" class="badge badge-success btn-apikey-badge" title="Cấu hình Google Gemini API Key">
+          <i class="fa-solid fa-key"></i> <span id="apikey-badge-text">Cấu hình API Key</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT GRID -->
+    <main class="main-layout">
+      
+      <!-- LEFT SIDEBAR: INPUT FORM -->
+      <section class="sidebar-section">
+        <div class="card form-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-sliders"></i>
+              <h2>Thông tin bài dạy</h2>
+            </div>
+            <button type="button" id="btn-load-sample" class="btn btn-sm btn-sample" title="Tải dữ liệu bài mẫu Tin học 10 - Mạng máy tính">
+              <i class="fa-solid fa-magic-wand-sparkles"></i> Bài mẫu demo
+            </button>
+          </div>
+
+          <form id="lesson-form" class="lesson-form">
+            
+            <!-- Row 1: Môn học & Khối lớp -->
+            <div class="form-row">
+              <div class="form-group flex-2">
+                <label for="subject"><i class="fa-solid fa-book"></i> Môn học <span class="required">*</span></label>
+                <input type="text" id="subject" class="form-control" placeholder="Ví dụ: Tin học, Toán, Ngữ văn..." required list="subject-suggestions">
+                <datalist id="subject-suggestions">
+                  <option value="Tin học"></option>
+                  <option value="Toán học"></option>
+                  <option value="Ngữ văn"></option>
+                  <option value="Tiếng Anh"></option>
+                  <option value="Vật lí"></option>
+                  <option value="Hóa học"></option>
+                  <option value="Sinh học"></option>
+                  <option value="Lịch sử & Địa lí"></option>
+                  <option value="Công nghệ"></option>
+                  <option value="Giáo dục kinh tế & pháp luật"></option>
+                </datalist>
+              </div>
+              <div class="form-group flex-1">
+                <label for="grade"><i class="fa-solid fa-layer-group"></i> Khối lớp <span class="required">*</span></label>
+                <select id="grade" class="form-control" required>
+                  <option value="">Chọn...</option>
+                  <option value="1">Lớp 1</option>
+                  <option value="2">Lớp 2</option>
+                  <option value="3">Lớp 3</option>
+                  <option value="4">Lớp 4</option>
+                  <option value="5">Lớp 5</option>
+                  <option value="6">Lớp 6</option>
+                  <option value="7">Lớp 7</option>
+                  <option value="8">Lớp 8</option>
+                  <option value="9">Lớp 9</option>
+                  <option value="10" selected>Lớp 10</option>
+                  <option value="11">Lớp 11</option>
+                  <option value="12">Lớp 12</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 2: Tên bài học -->
+            <div class="form-group">
+              <label for="lessonTitle"><i class="fa-solid fa-heading"></i> Tên bài học / Chủ đề <span class="required">*</span></label>
+              <input type="text" id="lessonTitle" class="form-control" placeholder="Ví dụ: Mạng máy tính và Internet" required>
+            </div>
+
+            <!-- Row 3: Thời lượng -->
+            <div class="form-group">
+              <label for="duration"><i class="fa-regular fa-clock"></i> Thời lượng dự kiến</label>
+              <input type="text" id="duration" class="form-control" placeholder="Ví dụ: 2 tiết (90 phút)" value="2 tiết (90 phút)">
+            </div>
+
+            <!-- Button to open Details Modal Popup -->
+            <div class="form-group mt-2">
+              <button type="button" id="btn-open-details" class="btn btn-details-toggle btn-block">
+                <i class="fa-solid fa-gears"></i>
+                <span>Cấu hình chi tiết (Mục tiêu, PPDH...)</span>
+                <span id="details-count-badge" class="badge-count">0/6</span>
+              </button>
+            </div>
+
+            <!-- FORM BUTTONS -->
+            <div class="form-actions">
+              <button type="submit" id="btn-generate" class="btn btn-primary btn-block">
+                <i class="fa-solid fa-sparkles"></i> Tạo Kế hoạch Bài dạy
+              </button>
+              <button type="button" id="btn-clear-form" class="btn btn-secondary">
+                <i class="fa-solid fa-rotate-left"></i> Xóa nhập liệu
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN: RESULTS CANVAS -->
+      <section class="canvas-section">
+        <div class="card canvas-card">
+          
+          <!-- RESULT TOOLBAR -->
+          <div class="canvas-toolbar">
+            <div class="toolbar-left">
+              <div class="toolbar-title">
+                <i class="fa-solid fa-file-contract"></i> Kế hoạch bài dạy (Công văn 7991)
+              </div>
+            </div>
+            
+            <div class="toolbar-right">
+              <button id="btn-copy" class="btn btn-tool" title="Sao chép toàn bộ kế hoạch bài dạy vào Clipboard" disabled>
+                <i class="fa-regular fa-copy"></i> Sao chép
+              </button>
+              <button id="btn-export-docx" class="btn btn-tool btn-export-word" title="Xuất file Word (.docx) chuẩn format" disabled>
+                <i class="fa-solid fa-file-word"></i> Xuất file Word
+              </button>
+              <button id="btn-export-pdf" class="btn btn-tool btn-export-pdf" title="Xuất file PDF" disabled>
+                <i class="fa-solid fa-file-pdf"></i> Xuất file PDF
+              </button>
+              <button id="btn-regenerate" class="btn btn-tool" title="Tạo lại kế hoạch với cùng dữ liệu" disabled>
+                <i class="fa-solid fa-arrows-rotate"></i> Tạo lại
+              </button>
+              <button id="btn-clear-result" class="btn btn-tool btn-danger-icon" title="Xóa kết quả hiển thị" disabled>
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- NOTICE BAR FOR BACKEND / API STATUS -->
+          <div id="status-notice-bar" class="status-notice hidden">
+            <i class="fa-solid fa-circle-info"></i> <span id="notice-text"></span>
+          </div>
+
+          <!-- CANVAS DISPLAY AREA -->
+          <div class="canvas-viewport">
+            
+            <!-- 1. EMPTY STATE -->
+            <div id="empty-state" class="state-container empty-state">
+              <div class="empty-illustration">
+                <i class="fa-solid fa-file-signature"></i>
+              </div>
+              <h3>Chưa có Kế hoạch bài dạy</h3>
+              <p>Hãy nhập thông tin bài học ở cột bên trái (hoặc chọn <strong>"Bài mẫu demo"</strong>) rồi nhấn nút <strong>"Tạo Kế hoạch Bài dạy"</strong> để AI tự động soạn thảo giáo án chuẩn Công văn 7991.</p>
+              <button type="button" id="btn-empty-demo" class="btn btn-primary btn-sm mt-3">
+                <i class="fa-solid fa-play"></i> Thử ngay với Bài mẫu Tin học 10
+              </button>
+            </div>
+
+            <!-- 2. LOADING STATE -->
+            <div id="loading-state" class="state-container loading-state hidden">
+              <div class="ai-loader">
+                <div class="spinner-ring"></div>
+                <div class="ai-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+              </div>
+              <h3 id="loading-title">AI đang tổng hợp và thiết kế kế hoạch bài dạy...</h3>
+              <p id="loading-step" class="loading-step-text">Đang phân tích mục tiêu bài học & chuẩn kiến thức 7991...</p>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" id="progress-bar"></div>
+              </div>
+            </div>
+
+            <!-- 3. RESULT VIEW STATE -->
+            <div id="result-state" class="state-container result-state hidden">
+              <!-- Printable Paper Page -->
+              <div id="paper-document" class="paper-document">
+                <div id="plan-rendered-content" class="plan-content markdown-body"></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+      <p>AI Lesson Plan Generator &copy; 2026 • Hỗ trợ Giáo viên Việt Nam Đổi mới Sáng tạo & Cắt giảm thời gian soạn giáo án theo Công văn 7991 / 5512 BGD&ĐT</p>
+    </footer>
+
+  </div>
+
+  <!-- LESSON DETAILS POPUP MODAL -->
+  <div id="details-modal" class="modal-backdrop hidden">
+    <div class="modal-card modal-large">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-sliders"></i> Cấu hình chi tiết Bài dạy</h3>
+        <button type="button" id="btn-close-details" class="btn-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body modal-scrollable">
+        <p class="modal-intro">Nhập các yêu cầu và định hướng cụ thể để AI thiết kế Kế hoạch bài dạy sát với thực tế lớp học của bạn:</p>
+
+        <div class="form-group mt-3">
+          <label for="objectives"><i class="fa-solid fa-bullseye"></i> 1. Mục tiêu bài học mong muốn</label>
+          <textarea id="objectives" class="form-control" rows="2" placeholder="Hiểu khái niệm mạng máy tính, phân biệt LAN/WAN... (để trống nếu muốn AI tự gợi ý)"></textarea>
+        </div>
+
+        <div class="form-group mt-2">
+          <label for="outcomes"><i class="fa-solid fa-award"></i> 2. Yêu cầu cần đạt (Chương trình GDPT 2018)</label>
+          <textarea id="outcomes" class="form-control" rows="2" placeholder="Nêu được các thành phần chính của mạng, kết nối được thiết bị đơn giản..."></textarea>
+        </div>
+
+        <div class="form-group mt-2">
+          <label for="content"><i class="fa-solid fa-list-check"></i> 3. Nội dung kiến thức trọng tâm</label>
+          <textarea id="content" class="form-control" rows="2" placeholder="1. Khái niệm mạng máy tính. 2. Các thành phần mạng. 3. Phân loại mạng. 4. Mô hình Client-Server."></textarea>
+        </div>
+
+        <div class="form-group mt-2">
+          <label for="methods"><i class="fa-solid fa-chalkboard-user"></i> 4. Phương pháp & Kỹ thuật dạy học</label>
+          <textarea id="methods" class="form-control" rows="2" placeholder="Vấn đáp gợi mở, thảo luận nhóm, trực quan, Kỹ thuật mảnh ghép..."></textarea>
+        </div>
+
+        <div class="form-group mt-2">
+          <label for="equipment"><i class="fa-solid fa-laptop-code"></i> 5. Thiết bị và học liệu</label>
+          <textarea id="equipment" class="form-control" rows="2" placeholder="Máy chiếu, SGK Tin 10, mẫu Switch/Router Wi-Fi, phiếu học tập số 1..."></textarea>
+        </div>
+
+        <div class="form-group mt-2">
+          <label for="notes"><i class="fa-solid fa-note-sticky"></i> 6. Ghi chú thêm (Nếu có)</label>
+          <textarea id="notes" class="form-control" rows="2" placeholder="Tăng cường tương tác nhóm, tích hợp kiểm tra trắc nghiệm Kahoot..."></textarea>
+        </div>
+
+        <div class="modal-footer mt-4">
+          <button type="button" id="btn-save-details" class="btn btn-primary btn-sm"><i class="fa-solid fa-check"></i> Lưu & Đóng</button>
+          <button type="button" id="btn-clear-details" class="btn btn-secondary btn-sm"><i class="fa-solid fa-rotate-left"></i> Xóa chi tiết</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API KEY MODAL -->
+  <div id="apikey-modal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-key"></i> Cấu hình Gemini API Key</h3>
+        <button type="button" id="btn-close-modal" class="btn-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>Ứng dụng có thể chạy <strong>API Key thực của bạn</strong> (miễn phí từ Google AI Studio) hoặc chạy ở <strong>Chế độ Mẫu Chuẩn Smart Template</strong> (không cần key).</p>
+        
+        <div class="form-group mt-3">
+          <label for="input-api-key"><i class="fa-solid fa-lock"></i> Nhập Google Gemini API Key của bạn:</label>
+          <input type="password" id="input-api-key" class="form-control" placeholder="AIzaSy...">
+          <small class="help-text">Key sẽ được lưu bảo mật trong trình duyệt của bạn (localStorage) và gửi trực tiếp đến Gemini API.</small>
+        </div>
+
+        <div class="api-key-actions">
+          <button type="button" id="btn-save-key" class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Lưu API Key</button>
+          <button type="button" id="btn-clear-key" class="btn btn-secondary btn-sm"><i class="fa-solid fa-trash"></i> Xóa Key (Dùng Mẫu Chuẩn)</button>
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" class="btn-link-key"><i class="fa-solid fa-arrow-up-right-from-square"></i> Lấy API Key miễn phí</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION SYSTEM -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Application Scripts -->
+  <script src="js/docx-exporter.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

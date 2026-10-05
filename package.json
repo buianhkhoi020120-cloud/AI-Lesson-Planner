@@ -1,0 +1,25 @@
+{
+  "name": "ai-lesson-plan-generator",
+  "version": "1.0.0",
+  "description": "Ứng dụng AI hỗ trợ tạo kế hoạch bài dạy theo Công văn 7991",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "ai",
+    "lesson-planner",
+    "cong-van-7991",
+    "giao-an",
+    "education"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
